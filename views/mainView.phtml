@@ -37,12 +37,12 @@
                     <form action="index.php" method="post">
                         <input type="hidden" name="like_post" value="<?= $post->getId() ?>">
                         <?php if (in_array($post->getId(), $misLikes)): ?>
-                            <button type="submit" class="like">❤️ <?= $post->getNumLikes() ?></button>
+                            <button type="submit" class="like activo">Te gusta (<?= $post->getNumLikes() ?>)</button>
                         <?php else: ?>
-                            <button type="submit" class="like">🤍 <?= $post->getNumLikes() ?></button>
+                            <button type="submit" class="like">Me gusta (<?= $post->getNumLikes() ?>)</button>
                         <?php endif; ?>
                     </form>
-                    <a href="index.php?var=ver&id=<?= $post->getId() ?>">💬 <?= $post->getNumComentarios() ?> comentarios</a>
+                    <a href="index.php?var=ver&id=<?= $post->getId() ?>"><?= $post->getNumComentarios() ?> comentarios</a>
                 </div>
             </div>
         <?php endforeach; ?>

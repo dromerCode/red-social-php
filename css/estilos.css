@@ -56,6 +56,12 @@ body {
     font-size: 1rem;
 }
 
+/* Cuando ya le has dado like */
+.activo {
+    background: teal;
+    color: white;
+}
+
 /* Posts y comentarios */
 .post,
 .comentario {
