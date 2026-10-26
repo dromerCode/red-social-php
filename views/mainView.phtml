@@ -1,4 +1,4 @@
-<!-- Vista principal: pinta $posts, que prepara el controlador -->
+<!-- Vista principal: pinta $posts y $misLikes, que prepara el controlador -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,29 +10,42 @@
 <body>
     <?php require __DIR__ . '/header.phtml'; ?>
 
-    <p><a href="index.php?var=nuevo" class="btn">Nuevo post</a></p>
+    <div class="contenido">
+        <p><a href="index.php?var=nuevo" class="btn">+ Nuevo post</a></p>
 
-    <?php if (count($posts) == 0): ?>
-        <p>Todavía no hay ningún post.</p>
-    <?php endif; ?>
+        <?php if ($mensaje): ?>
+            <p class="error"><?= htmlspecialchars($mensaje) ?></p>
+        <?php endif; ?>
 
-    <?php foreach ($posts as $post): ?>
-        <div class="post">
-            <h2><a href="index.php?var=ver&id=<?= $post->getId() ?>"><?= htmlspecialchars($post->getTitulo()) ?></a></h2>
-            <p class="autor">Por <strong><?= htmlspecialchars($post->getNombreAutor()) ?></strong> el <?= $post->getFecha() ?></p>
+        <?php if (count($posts) == 0): ?>
+            <p>Todavía no hay ningún post.</p>
+        <?php endif; ?>
 
-            <?php if ($post->getImagen() != null): ?>
-                <img src="img/posts/<?= htmlspecialchars($post->getImagen()) ?>" alt="Imagen del post">
-            <?php endif; ?>
+        <?php foreach ($posts as $post): ?>
+            <div class="post">
+                <h2><a href="index.php?var=ver&id=<?= $post->getId() ?>"><?= htmlspecialchars($post->getTitulo()) ?></a></h2>
+                <p class="autor">Por <strong><?= htmlspecialchars($post->getNombreAutor()) ?></strong> el <?= $post->getFecha() ?></p>
 
-            <!-- nl2br para que se vean los saltos de línea del texto -->
-            <p><?= nl2br(htmlspecialchars($post->getContenido())) ?></p>
+                <?php if ($post->getImagen() != null): ?>
+                    <img src="img/posts/<?= htmlspecialchars($post->getImagen()) ?>" alt="Imagen del post">
+                <?php endif; ?>
 
-            <p class="contadores">
-                <a href="index.php?var=ver&id=<?= $post->getId() ?>"><?= $post->getNumComentarios() ?> comentarios</a>
-                · <?= $post->getNumLikes() ?> ❤️
-            </p>
-        </div>
-    <?php endforeach; ?>
+                <!-- nl2br para que se vean los saltos de línea del texto -->
+                <p><?= nl2br(htmlspecialchars($post->getContenido())) ?></p>
+
+                <div class="acciones">
+                    <form action="index.php" method="post">
+                        <input type="hidden" name="like_post" value="<?= $post->getId() ?>">
+                        <?php if (in_array($post->getId(), $misLikes)): ?>
+                            <button type="submit" class="like">❤️ <?= $post->getNumLikes() ?></button>
+                        <?php else: ?>
+                            <button type="submit" class="like">🤍 <?= $post->getNumLikes() ?></button>
+                        <?php endif; ?>
+                    </form>
+                    <a href="index.php?var=ver&id=<?= $post->getId() ?>">💬 <?= $post->getNumComentarios() ?> comentarios</a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </body>
 </html>
