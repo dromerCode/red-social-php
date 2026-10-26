@@ -1,0 +1,150 @@
+body {
+    font-family: sans-serif;
+    margin: 2rem;
+    background: whitesmoke;
+}
+
+/* Cabecera */
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid darkslategray;
+    margin-bottom: 1.5rem;
+}
+
+.cabecera a {
+    color: darkslategray;
+}
+
+/* Columna central donde van los posts */
+.contenido {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    background: teal;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.rojo {
+    background: firebrick;
+}
+
+.btn-texto {
+    background: none;
+    border: none;
+    color: firebrick;
+    cursor: pointer;
+}
+
+/* Botón del corazón */
+.like {
+    background: white;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Posts y comentarios */
+.post,
+.comentario {
+    background: white;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.post h2 {
+    margin-top: 0;
+}
+
+.post h2 a {
+    color: darkslategray;
+    text-decoration: none;
+}
+
+/* Que la foto no se salga del post */
+.post img {
+    max-width: 100%;
+}
+
+.comentario {
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.autor {
+    color: gray;
+    font-size: 0.9rem;
+}
+
+/* Like, comentarios y borrar, en una fila */
+.acciones {
+    margin-top: 0.5rem;
+}
+
+.acciones form {
+    display: inline;
+    margin-right: 1rem;
+}
+
+.acciones a {
+    color: darkslategray;
+}
+
+.nuevo-comentario textarea {
+    width: 100%;
+    padding: 0.4rem;
+    box-sizing: border-box;
+    margin: 0.5rem 0;
+}
+
+/* Formularios */
+.formulario {
+    background: white;
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 400px;
+    margin: 1.5rem auto;
+}
+
+.formulario label {
+    display: block;
+    margin-top: 0.8rem;
+    font-weight: bold;
+}
+
+.formulario input[type="text"],
+.formulario input[type="email"],
+.formulario input[type="password"],
+.formulario textarea {
+    width: 100%;
+    padding: 0.4rem;
+    box-sizing: border-box;
+}
+
+.formulario input[type="submit"] {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.error {
+    color: red;
+}
+
+.ok {
+    color: green;
+}
