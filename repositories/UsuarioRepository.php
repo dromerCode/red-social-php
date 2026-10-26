@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/Usuario.php';
 
-// Repositorio de usuarios: es la única clase que habla con la tabla "usuario".
+// Repositorio de usuarios
 class UsuarioRepository{
     private mysqli $db;
 
@@ -10,7 +10,7 @@ class UsuarioRepository{
         $this->db = $db;
     }
 
-    // Busca un usuario por su email. Devuelve el Usuario o null si no existe.
+    // buscar usuario por email (o null)
     public function findByEmail($email){
         $stmt = $this->db->prepare("SELECT id_usuario, nombre, email, contrasena FROM usuario WHERE email = ?");
         $stmt->bind_param("s", $email);
@@ -23,7 +23,7 @@ class UsuarioRepository{
         return new Usuario($fila['id_usuario'], $fila['nombre'], $fila['email'], $fila['contrasena']);
     }
 
-    // Guarda un usuario nuevo. El id lo pone la base de datos.
+    // guardar usuario nuevo
     public function save(Usuario $usuario){
         $stmt = $this->db->prepare("INSERT INTO usuario (nombre, email, contrasena) VALUES (?, ?, ?)");
         $nombre = $usuario->getNombre();

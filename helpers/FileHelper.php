@@ -1,12 +1,11 @@
 <?php
-// Funciones para subir y borrar las imágenes de los posts
+// Para subir y borrar las imagenes
 class FileHelper {
-    // Carpeta donde se guardan las imágenes (en la web se ven como img/posts/nombre.jpg)
     const CARPETA = __DIR__ . '/../img/posts/';
     const EXTENSIONES = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
     const TAMANO_MAXIMO = 2 * 1024 * 1024; // 2 MB
 
-    // Comprueba que el archivo se ha subido bien, que es una imagen y que no pesa demasiado
+    // comprueba que es una imagen y que no pasa de 2 MB
     public static function esImagenValida(array $archivo): bool {
         if ($archivo['error'] != UPLOAD_ERR_OK) {
             return false;
@@ -18,14 +17,14 @@ class FileHelper {
         if (!in_array($extension, self::EXTENSIONES)) {
             return false;
         }
-        // getimagesize devuelve false si el archivo no es una imagen de verdad
+        // si no es una imagen de verdad devuelve false
         if (getimagesize($archivo['tmp_name']) === false) {
             return false;
         }
         return true;
     }
 
-    // Mueve la imagen a la carpeta con un nombre único y devuelve ese nombre para guardarlo en la BD
+    // guarda la imagen con un nombre unico y devuelve el nombre
     public static function subirImagen(array $archivo): string {
         $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
         $nombre = uniqid('post_') . '.' . $extension;

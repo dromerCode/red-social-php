@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/Comentario.php';
 
-// Repositorio de comentarios: es la única clase que habla con las tablas "comentario" y "megusta_comentario".
+// Repositorio de comentarios
 class ComentarioRepository{
     private mysqli $db;
 
@@ -10,7 +10,7 @@ class ComentarioRepository{
         $this->db = $db;
     }
 
-    // Devuelve los comentarios de un post, del más viejo al más nuevo, con el autor y sus likes
+    // comentarios de un post con el autor y los likes
     public function findByPost($idPost){
         $stmt = $this->db->prepare("SELECT c.id_comentario, c.texto, c.fecha, c.id_post, c.id_usuario, u.nombre,
                 (SELECT COUNT(*) FROM megusta_comentario m WHERE m.id_comentario = c.id_comentario) AS num_likes
@@ -28,7 +28,7 @@ class ComentarioRepository{
         return $comentarios;
     }
 
-    // Guarda un comentario nuevo. El id y la fecha los pone la base de datos.
+    // guardar comentario nuevo
     public function save(Comentario $comentario){
         $stmt = $this->db->prepare("INSERT INTO comentario (texto, id_post, id_usuario) VALUES (?, ?, ?)");
         $texto = $comentario->getTexto();
@@ -38,16 +38,16 @@ class ComentarioRepository{
         $stmt->execute();
     }
 
-    // Borra un comentario, pero solo si es de ese usuario (así nadie borra los de otros)
+    // borra el comentario solo si es de ese usuario
     public function delete($id, $idUsuario){
         $stmt = $this->db->prepare("DELETE FROM comentario WHERE id_comentario = ? AND id_usuario = ?");
         $stmt->bind_param("ii", $id, $idUsuario);
         $stmt->execute();
     }
 
-    // ---------- LIKES ----------
+    // likes
 
-    // Devuelve los ids de los comentarios a los que el usuario ha dado like
+    // ids de los comentarios a los que el usuario ha dado like
     public function findLikesUsuario($idUsuario){
         $stmt = $this->db->prepare("SELECT id_comentario FROM megusta_comentario WHERE id_usuario = ?");
         $stmt->bind_param("i", $idUsuario);
@@ -60,7 +60,7 @@ class ComentarioRepository{
         return $ids;
     }
 
-    // Si el usuario ya le había dado like al comentario se lo quita, y si no se lo pone
+    // si ya tenia like lo quita, si no lo pone
     public function cambiarLike($idComentario, $idUsuario){
         $stmt = $this->db->prepare("SELECT id_comentario FROM megusta_comentario WHERE id_comentario = ? AND id_usuario = ?");
         $stmt->bind_param("ii", $idComentario, $idUsuario);

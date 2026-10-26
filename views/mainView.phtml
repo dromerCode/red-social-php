@@ -1,4 +1,4 @@
-<!-- Vista principal: pinta $posts y $misLikes, que prepara el controlador -->
+<!-- Lista de posts -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,7 +30,7 @@
                     <img src="img/posts/<?= htmlspecialchars($post->getImagen()) ?>" alt="Imagen del post">
                 <?php endif; ?>
 
-                <!-- nl2br para que se vean los saltos de línea del texto -->
+                <!-- nl2br para los saltos de linea -->
                 <p><?= nl2br(htmlspecialchars($post->getContenido())) ?></p>
 
                 <div class="acciones">

@@ -1,6 +1,6 @@
 <?php
 
-// Clase que representa un usuario de la aplicación.
+// Clase Usuario
 class Usuario{
     private $id;
     private $nombre;

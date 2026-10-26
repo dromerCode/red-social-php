@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/Post.php';
 
-// Repositorio de posts: es la única clase que habla con la tabla "post" (y "megusta").
+// Repositorio de posts
 class PostRepository{
     private mysqli $db;
 
@@ -10,8 +10,7 @@ class PostRepository{
         $this->db = $db;
     }
 
-    // Devuelve todos los posts, del más nuevo al más viejo, con el nombre del autor
-    // y cuántos comentarios y likes tiene cada uno.
+    // todos los posts con el autor y cuantos comentarios y likes tienen
     public function findAll(){
         $resultado = $this->db->query("SELECT p.id_post, p.titulo, p.texto, p.imagen, p.fecha, p.id_usuario, u.nombre,
                 (SELECT COUNT(*) FROM comentario c WHERE c.id_post = p.id_post) AS num_comentarios,
@@ -26,7 +25,7 @@ class PostRepository{
         return $posts;
     }
 
-    // Busca un post por su id. Devuelve el Post o null si no existe.
+    // un post por su id (o null)
     public function findById($id){
         $stmt = $this->db->prepare("SELECT p.id_post, p.titulo, p.texto, p.imagen, p.fecha, p.id_usuario, u.nombre,
                 (SELECT COUNT(*) FROM comentario c WHERE c.id_post = p.id_post) AS num_comentarios,
@@ -44,7 +43,7 @@ class PostRepository{
         return new Post($fila['id_post'], $fila['titulo'], $fila['texto'], $fila['imagen'], $fila['fecha'], $fila['id_usuario'], $fila['nombre'], $fila['num_comentarios'], $fila['num_likes']);
     }
 
-    // Guarda un post nuevo. El id y la fecha los pone la base de datos.
+    // guardar post nuevo
     public function save(Post $post){
         $stmt = $this->db->prepare("INSERT INTO post (titulo, texto, imagen, id_usuario) VALUES (?, ?, ?, ?)");
         $titulo = $post->getTitulo();
@@ -55,16 +54,16 @@ class PostRepository{
         $stmt->execute();
     }
 
-    // Borra un post. Sus comentarios y likes se borran solos (ON DELETE CASCADE).
+    // los comentarios y likes se borran solos por el CASCADE
     public function delete($id){
         $stmt = $this->db->prepare("DELETE FROM post WHERE id_post = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
     }
 
-    // ---------- LIKES ----------
+    // likes
 
-    // Devuelve los ids de los posts a los que el usuario ha dado like (para pintar el corazón lleno)
+    // ids de los posts a los que el usuario ha dado like
     public function findLikesUsuario($idUsuario){
         $stmt = $this->db->prepare("SELECT id_post FROM megusta WHERE id_usuario = ?");
         $stmt->bind_param("i", $idUsuario);
@@ -77,7 +76,7 @@ class PostRepository{
         return $ids;
     }
 
-    // Si el usuario ya le había dado like al post se lo quita, y si no se lo pone
+    // si ya tenia like lo quita, si no lo pone
     public function cambiarLike($idPost, $idUsuario){
         $stmt = $this->db->prepare("SELECT id_post FROM megusta WHERE id_post = ? AND id_usuario = ?");
         $stmt->bind_param("ii", $idPost, $idUsuario);

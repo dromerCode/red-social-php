@@ -1,11 +1,11 @@
 <?php
 
-// Clase que representa un post de la aplicación.
+// Clase Post
 class Post {
     private $id;
     private $titulo;
     private $contenido;
-    // Nombre del archivo en img/posts, o null si el post no tiene imagen
+    // nombre del archivo en img/posts (o null)
     private $imagen;
     private $fecha;
     private $usuario_id;

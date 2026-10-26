@@ -1,13 +1,13 @@
 <?php
 
-// Clase que representa un comentario de un post.
+// Clase Comentario
 class Comentario {
     private $id;
     private $texto;
     private $fecha;
     private $idPost;
     private $usuario_id;
-    // Estos dos no son columnas de la tabla comentario, salen de la consulta
+    // estos salen de la consulta, no son columnas
     private $nombreAutor;
     private $numLikes;
 

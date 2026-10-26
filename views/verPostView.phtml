@@ -1,4 +1,4 @@
-<!-- Vista de un post: pinta $post, $comentarios, $misLikes y $misLikesComentarios, que prepara el controlador -->
+<!-- Ver un post con sus comentarios -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -26,7 +26,7 @@
             <div class="acciones">
                 <form action="index.php" method="post">
                     <input type="hidden" name="like_post" value="<?= $post->getId() ?>">
-                    <!-- Para volver a esta página después del like -->
+                    <!-- para volver aquí después del like -->
                     <input type="hidden" name="volver" value="ver">
                     <?php if (in_array($post->getId(), $misLikes)): ?>
                         <button type="submit" class="like activo">Te gusta (<?= $post->getNumLikes() ?>)</button>
@@ -35,7 +35,7 @@
                     <?php endif; ?>
                 </form>
 
-                <!-- Solo el autor ve el botón de borrar -->
+                <!-- solo el autor puede borrar -->
                 <?php if ($post->getUsuarioId() == $usuario->getId()): ?>
                     <form action="index.php" method="post">
                         <input type="hidden" name="borrar_post" value="<?= $post->getId() ?>">

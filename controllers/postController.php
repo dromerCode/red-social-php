@@ -6,11 +6,11 @@ require_once __DIR__ . '/../helpers/FileHelper.php';
 $postRepository = new PostRepository($db);
 $comentarioRepository = new ComentarioRepository($db);
 
-// ---------- NUEVO POST ----------
+// nuevo post
 if (isset($_POST['crear_titulo'], $_POST['crear_texto'])) {
     $titulo = trim($_POST['crear_titulo']);
     $texto = trim($_POST['crear_texto']);
-    // La imagen es opcional: si no eligen ninguna se queda a null
+    // la imagen es opcional
     $imagen = null;
     $error = false;
 
@@ -27,19 +27,17 @@ if (isset($_POST['crear_titulo'], $_POST['crear_texto'])) {
     }
 
     if (!$error) {
-        // Id y fecha los pone la BD. El autor es el de la sesión.
         $nuevoPost = new Post(null, $titulo, $texto, $imagen, null, $usuario->getId(), null, 0, 0);
         $postRepository->save($nuevoPost);
-        // Volvemos a la lista para ver el post (y que al recargar no se publique otra vez)
         header("Location: index.php");
         exit;
     }
 }
 
-// ---------- BORRAR POST ----------
+// borrar post
 if (isset($_POST['borrar_post'])) {
     $post = $postRepository->findById($_POST['borrar_post']);
-    // Solo puede borrarlo su autor. Antes borramos la imagen de la carpeta.
+    // solo si es mio, y borro tambien la imagen
     if ($post && $post->getUsuarioId() == $usuario->getId()) {
         FileHelper::borrarImagen($post->getImagen());
         $postRepository->delete($post->getId());
@@ -48,10 +46,10 @@ if (isset($_POST['borrar_post'])) {
     exit;
 }
 
-// ---------- LIKE A UN POST ----------
+// like a un post
 if (isset($_POST['like_post'])) {
     $postRepository->cambiarLike($_POST['like_post'], $usuario->getId());
-    // Si el like se ha dado desde la página del post volvemos ahí, si no a la lista
+    // volver al post o a la lista
     if (isset($_POST['volver']) && $_POST['volver'] == 'ver') {
         header("Location: index.php?var=ver&id=" . $_POST['like_post']);
     } else {
@@ -60,7 +58,7 @@ if (isset($_POST['like_post'])) {
     exit;
 }
 
-// ---------- COMENTAR ----------
+// comentar
 if (isset($_POST['comentar_texto'], $_POST['comentar_post'])) {
     $texto = trim($_POST['comentar_texto']);
     if ($texto != '') {
@@ -71,33 +69,32 @@ if (isset($_POST['comentar_texto'], $_POST['comentar_post'])) {
     exit;
 }
 
-// ---------- BORRAR COMENTARIO ----------
+// borrar comentario
 if (isset($_POST['borrar_comentario'], $_POST['id_post'])) {
-    // El repositorio solo lo borra si el comentario es de este usuario
+    // solo borra si el comentario es mio
     $comentarioRepository->delete($_POST['borrar_comentario'], $usuario->getId());
     header("Location: index.php?var=ver&id=" . $_POST['id_post']);
     exit;
 }
 
-// ---------- LIKE A UN COMENTARIO ----------
+// like a un comentario
 if (isset($_POST['like_comentario'], $_POST['id_post'])) {
     $comentarioRepository->cambiarLike($_POST['like_comentario'], $usuario->getId());
     header("Location: index.php?var=ver&id=" . $_POST['id_post']);
     exit;
 }
 
-// ---------- VISTAS ----------
+// vistas
 
-// Formulario de nuevo post
 if (isset($_GET['var']) && $_GET['var'] == 'nuevo') {
     require __DIR__ . '/../views/nuevoPostView.phtml';
     exit;
 }
 
-// Ids de los posts a los que les he dado like (para pintar el corazón lleno)
+// posts a los que he dado like
 $misLikes = $postRepository->findLikesUsuario($usuario->getId());
 
-// Un post con sus comentarios
+// ver un post
 if (isset($_GET['var']) && $_GET['var'] == 'ver' && isset($_GET['id'])) {
     $post = $postRepository->findById($_GET['id']);
     if ($post) {
@@ -109,7 +106,7 @@ if (isset($_GET['var']) && $_GET['var'] == 'ver' && isset($_GET['id'])) {
     $mensaje = "Ese post no existe";
 }
 
-// Lista de posts
+// lista de posts
 $posts = $postRepository->findAll();
 
 require __DIR__ . '/../views/mainView.phtml';
