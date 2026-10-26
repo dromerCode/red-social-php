@@ -1,0 +1,89 @@
+<!-- Vista de un post: pinta $post, $comentarios, $misLikes y $misLikesComentarios, que prepara el controlador -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($post->getTitulo()) ?></title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+
+    <div class="contenido">
+        <p><a href="index.php">← Volver</a></p>
+
+        <div class="post">
+            <h2><?= htmlspecialchars($post->getTitulo()) ?></h2>
+            <p class="autor">Por <strong><?= htmlspecialchars($post->getNombreAutor()) ?></strong> el <?= $post->getFecha() ?></p>
+
+            <?php if ($post->getImagen() != null): ?>
+                <img src="img/posts/<?= htmlspecialchars($post->getImagen()) ?>" alt="Imagen del post">
+            <?php endif; ?>
+
+            <p><?= nl2br(htmlspecialchars($post->getContenido())) ?></p>
+
+            <div class="acciones">
+                <form action="index.php" method="post">
+                    <input type="hidden" name="like_post" value="<?= $post->getId() ?>">
+                    <!-- Para volver a esta página después del like -->
+                    <input type="hidden" name="volver" value="ver">
+                    <?php if (in_array($post->getId(), $misLikes)): ?>
+                        <button type="submit" class="like">❤️ <?= $post->getNumLikes() ?></button>
+                    <?php else: ?>
+                        <button type="submit" class="like">🤍 <?= $post->getNumLikes() ?></button>
+                    <?php endif; ?>
+                </form>
+
+                <!-- Solo el autor ve el botón de borrar -->
+                <?php if ($post->getUsuarioId() == $usuario->getId()): ?>
+                    <form action="index.php" method="post">
+                        <input type="hidden" name="borrar_post" value="<?= $post->getId() ?>">
+                        <input type="submit" class="btn rojo" value="Borrar post">
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <h3>Comentarios (<?= count($comentarios) ?>)</h3>
+
+        <?php if (count($comentarios) == 0): ?>
+            <p>Todavía no hay comentarios.</p>
+        <?php endif; ?>
+
+        <?php foreach ($comentarios as $comentario): ?>
+            <div class="comentario">
+                <p class="autor"><strong><?= htmlspecialchars($comentario->getNombreAutor()) ?></strong> el <?= $comentario->getFecha() ?></p>
+                <p><?= nl2br(htmlspecialchars($comentario->getTexto())) ?></p>
+
+                <div class="acciones">
+                    <form action="index.php" method="post">
+                        <input type="hidden" name="like_comentario" value="<?= $comentario->getId() ?>">
+                        <input type="hidden" name="id_post" value="<?= $post->getId() ?>">
+                        <?php if (in_array($comentario->getId(), $misLikesComentarios)): ?>
+                            <button type="submit" class="like">❤️ <?= $comentario->getNumLikes() ?></button>
+                        <?php else: ?>
+                            <button type="submit" class="like">🤍 <?= $comentario->getNumLikes() ?></button>
+                        <?php endif; ?>
+                    </form>
+
+                    <?php if ($comentario->getUsuarioId() == $usuario->getId()): ?>
+                        <form action="index.php" method="post">
+                            <input type="hidden" name="borrar_comentario" value="<?= $comentario->getId() ?>">
+                            <input type="hidden" name="id_post" value="<?= $post->getId() ?>">
+                            <input type="submit" class="btn-texto" value="Borrar">
+                        </form>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+
+        <form action="index.php" method="post" class="nuevo-comentario">
+            <input type="hidden" name="comentar_post" value="<?= $post->getId() ?>">
+            <label for="comentar_texto">Escribe un comentario:</label>
+            <textarea name="comentar_texto" id="comentar_texto" rows="3" required></textarea>
+            <input type="submit" class="btn" value="Comentar">
+        </form>
+    </div>
+</body>
+</html>
