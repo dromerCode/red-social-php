@@ -1,0 +1,38 @@
+<!-- Vista principal: pinta $posts, que prepara el controlador -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red social</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+
+    <p><a href="index.php?var=nuevo" class="btn">Nuevo post</a></p>
+
+    <?php if (count($posts) == 0): ?>
+        <p>Todavía no hay ningún post.</p>
+    <?php endif; ?>
+
+    <?php foreach ($posts as $post): ?>
+        <div class="post">
+            <h2><a href="index.php?var=ver&id=<?= $post->getId() ?>"><?= htmlspecialchars($post->getTitulo()) ?></a></h2>
+            <p class="autor">Por <strong><?= htmlspecialchars($post->getNombreAutor()) ?></strong> el <?= $post->getFecha() ?></p>
+
+            <?php if ($post->getImagen() != null): ?>
+                <img src="img/posts/<?= htmlspecialchars($post->getImagen()) ?>" alt="Imagen del post">
+            <?php endif; ?>
+
+            <!-- nl2br para que se vean los saltos de línea del texto -->
+            <p><?= nl2br(htmlspecialchars($post->getContenido())) ?></p>
+
+            <p class="contadores">
+                <a href="index.php?var=ver&id=<?= $post->getId() ?>"><?= $post->getNumComentarios() ?> comentarios</a>
+                · <?= $post->getNumLikes() ?> ❤️
+            </p>
+        </div>
+    <?php endforeach; ?>
+</body>
+</html>

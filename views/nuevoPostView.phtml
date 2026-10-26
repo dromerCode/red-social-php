@@ -1,0 +1,29 @@
+<!-- Vista para publicar un post nuevo -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo post</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+    <div class="formulario">
+        <h2>Nuevo post</h2>
+        <form action="index.php?var=nuevo" method="post" enctype="multipart/form-data">
+            <label for="crear_titulo">Título:</label>
+            <input type="text" name="crear_titulo" id="crear_titulo" required>
+            <label for="crear_texto">Texto:</label>
+            <textarea name="crear_texto" id="crear_texto" rows="5" required></textarea>
+            <label for="imagen">Imagen:</label>
+            <input type="file" name="imagen" id="imagen">
+            <input type="submit" class="btn" value="Publicar">
+        </form>
+        <?php if ($mensaje): ?>
+            <p class="error"><?= htmlspecialchars($mensaje) ?></p>
+        <?php endif; ?>
+        <p><a href="index.php">Volver</a></p>
+    </div>
+</body>
+</html>

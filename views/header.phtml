@@ -1,0 +1,6 @@
+<div class="cabecera">
+    <h1><a href="index.php">Red social</a></h1>
+    <?php if (isset($_SESSION['usuario'])): ?>
+        <p>Hola, <strong><?= htmlspecialchars($_SESSION['usuario']->getNombre()) ?></strong> | <a href="logout.php">Cerrar sesión</a></p>
+    <?php endif; ?>
+</div>

@@ -1,0 +1,27 @@
+<!-- Vista de login -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <?php require __DIR__ . '/header.phtml'; ?>
+    <div class="formulario">
+        <h2>Iniciar sesión</h2>
+        <form action="index.php" method="post">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            <label for="passwd">Contraseña:</label>
+            <input type="password" name="passwd" id="passwd" required>
+            <input type="submit" class="btn" value="Iniciar sesión">
+        </form>
+        <?php if ($mensaje): ?>
+            <p class="error"><?= htmlspecialchars($mensaje) ?></p>
+        <?php endif; ?>
+        <p>¿No tienes cuenta? <a href="index.php?var=2">Regístrate</a></p>
+    </div>
+</body>
+</html>
